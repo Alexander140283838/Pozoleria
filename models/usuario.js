@@ -4,19 +4,23 @@ const mongoose = require('mongoose');
 const usuarioSchema = new mongoose.Schema({
   nombre: {
     type: String,
-    required: true,
+    required: [true, 'El nombre es obligatorio'],
+    trim: true
   },
   correo: {
     type: String,
-    required: true,
+    required: [true, 'El correo es obligatorio'],
     unique: true,
+    lowercase: true,
+    match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Correo inválido']
   },
   password: {
     type: String,
-    required: true,
-  },
+    required: [true, 'La contraseña es obligatoria'],
+    minlength: [4, 'La contraseña debe tener al menos 4 caracteres']
+  }
 }, {
-  timestamps: true // guarda automáticamente createdAt y updatedAt
+  timestamps: true // agrega createdAt y updatedAt automáticamente
 });
 
 module.exports = mongoose.model('Usuario', usuarioSchema);
